@@ -52,7 +52,7 @@ app = FastAPI()
 @app.get("/")
 async def root():
 	# save_user("John", "123")
-	return {"message": "Hello World"}
+	return {"message": "Hello World!!!"}
 
 
 @app.post("/api/sync/{method}")
