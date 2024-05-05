@@ -1,6 +1,7 @@
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from typing import Union, List
 
 from os import getenv, path
 from dotenv import load_dotenv
