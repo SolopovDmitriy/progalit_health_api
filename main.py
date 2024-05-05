@@ -24,10 +24,14 @@ Session = sessionmaker(bind=engine)
 
 
 
-class UserPydantic(BaseModel):
-    username: str
-    password: str
+class UserRequest(BaseModel):
+	username: str
+	password: str
 
+
+class SyncRequest(BaseModel):
+	userid: str
+	data: Union[str, List[str]]
 
 
 def find_or_insert_user(username: str, password: str) -> bool:
@@ -44,40 +48,32 @@ def find_or_insert_user(username: str, password: str) -> bool:
 		print(f"An error occurred: {e}")
 	return None
 
-
-
 app = FastAPI()
-
 
 @app.get("/")
 async def root():
-	# save_user("John", "123")
 	return {"message": "Hello World!!!"}
 
 
 @app.post("/api/sync/{method}")
-async def sync(method):
+async def sync(method: str, request: SyncRequest):
 	try:
 		# method = method[0].lower() + method[1:]
 		print(method)
 		method_str = str(method)	
-		# save_user("John", method_str)
-		userid = request.json['userid']
-		data = request.json['data']
+		userid = request.userid
+		data = request.data
 		if type(data) != list:
 			data = [data]
 		print(method, len(data))
 		return method_str
 	except Exception as e:
 		print(f"An error occurred: {e}")
-	return "error"
-
-
-	
+		return {"error": str(e)}
 
 
 @app.post("/api/login")
-def login(request_user: UserPydantic): 
+def login(request_user: UserRequest): 
 	try:
 		with Session() as session:
 			db_user = session.query(User).filter_by(username=request_user.username).first()
