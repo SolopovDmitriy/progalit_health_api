@@ -29,10 +29,13 @@ class UserRequest(BaseModel):
 	username: str
 	password: str
 
-
 class SyncRequest(BaseModel):
 	userid: str
-	data: Union[str, List[str]]
+	data: int
+
+# class SyncRequest(BaseModel):
+# 	userid: str
+# 	data: Union[str, List[str]]
 
 
 def find_or_insert_user(username: str, password: str) -> bool:
