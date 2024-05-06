@@ -66,7 +66,7 @@ async def sync(method: str, request: SyncRequest):
 		data = request.data
 		if type(data) != list:
 			data = [data]
-		print(method, len(data))
+		print(data)
 		return method_str
 	except Exception as e:
 		print(f"An error occurred: {e}")
@@ -83,8 +83,18 @@ def login(request_user: UserRequest):
 				session.add(db_user)
 				session.flush()			
 			session.commit()
-			return {"sessid": db_user.id}
+			return {"sessid": str(db_user.id)}
 	except Exception as e:
 		print(f"An error occurred: {e}")
 		raise HTTPException(status_code=400, detail="exception in try")
 
+
+
+#  LOG  5
+#  WARN  [AsyncStorage] The value for key "session" is not a string. This can lead to unexpected behavior/errors. 
+# Consider stringifying it.
+# Passed value: 5
+# Passed key: session
+#  WARN  Possible Unhandled Promise Rejection (id: 17):
+# Error: java.lang.Double cannot be cast to java.lang.String
+# Error: java.lang.Double cannot be cast to java.lang.String
